@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "443:443"
+    restart: always
+
+  wordpress:
+    build:
+      context: ./wordpress
+    volumes:
+      - wordpress_db:/var/lib/mysql
+      - wordpress_files:/var/www/html
+    restart: always
+
+  mariadb:
+    build:
+      context: ./mariadb
+    volumes:
+      - wordpress_db:/var/lib/mysql
+    restart: always
+
+volumes:
+  wordpress_db:
+  wordpress_files:
+
+networks:
+  default:
+    driver: bridge
